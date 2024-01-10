@@ -5,13 +5,60 @@ const PageRemovalMap = [];
 const DataExport = [];
 const EditorialReport = [];
 const Output = [];
+const noindex_links = [];
 let matchedData = [];
+const array = [
+  "/guides/holiday-guide/",
+  "url2",
+  "url3"
+];
+const link = `/guides/holiday-guide`;
 
-// fs.createReadStream("PageRemovalMap.csv")
+array.map((val)=>{
+  if(val === `${link}/`){
+    console.log("OK");
+  }
+  else{
+    console.log("Not Ok")
+  }
+})
+const writeStream = fs.createWriteStream("array.js"); 
+// array.map((val)=> console.log(val));
+// fs.createReadStream("noindex_links.csv")
 //   .pipe(csv())
-//   .on("data", (data) => PageRemovalMap.push(data))
+//   .on("data", (data) => Output.push(data))
 //   .on("end", () => {
-//   });
+//     Output.map((e) => {
+//       noindex_links.push(e.Page.slice(15));
+//     });
+
+//     noindex_links.forEach((url)=>{
+//       console.log("Running...")
+//       if(url == "/learn/sativa"){
+//         console.log(url);
+//         return;
+//       }
+//     })
+    // Writing Array to a file
+
+  //   noindex_links.forEach((value) => {
+  //     const link = JSON.stringify(value);
+  //     writeStream.write(`${link},\n`);
+  //   });
+
+  //   // the finish event is emitted when all data has been flushed from the stream
+  //   writeStream.on("finish", () => {
+  //     console.log(`wrote all the array data to file...`);
+  //   });
+
+  //   // handle the errors on the write process
+  //   writeStream.on("error", (err) => {
+  //     console.error(`There is an error writing the file`);
+  //   });
+
+  //   // close the stream
+  //   writeStream.end();
+  // });
 
 // fs.createReadStream("data-export.csv")
 //   .pipe(csv())
@@ -44,41 +91,41 @@ const CompareFunction = () => {
   console.log("Matched Data", matchedData[0], matchedData.length);
 };
 
-fs.createReadStream("EditorialReport.csv")
-  .pipe(csv())
-  .on("data", (data) => EditorialReport.push(data))
-  .on("end", () => {
-    console.log("Editorial Report", EditorialReport.length, EditorialReport[0]);
-  });
-let matchCount = 0;
-fs.createReadStream("Output.csv")
-  .pipe(csv())
-  .on("data", (data) => Output.push(data))
-  .on("end", () => {
-    console.log("Output", Output.length);
-    for (let i = 0; i < Output.length; i++) {
-      let matchFound = false;
-      for (let j = 0; j < EditorialReport.length; j++) {
-        if (Output[i]["Page"] === EditorialReport[j]["Herb Co Page Url"]) {
-          let obj = { ...Output[i] };
-          for (let key in EditorialReport[j]) {
-            if (key !== "Herb Co Page Url") {
-              obj[key] = EditorialReport[j][key];
-            }
-          }
-          matchedData.push(obj);
-          matchFound = true;
-          matchCount++;
-          break;
-        }
-      }
-      if (!matchFound) {
-        matchedData.push(Output[i]);
-      }
-    }
-    console.log("Matched Data", matchedData[0], matchedData.length);
-    console.log("Match Count", matchCount);
-  });
+// fs.createReadStream("EditorialReport.csv")
+//   .pipe(csv())
+//   .on("data", (data) => EditorialReport.push(data))
+//   .on("end", () => {
+//     console.log("Editorial Report", EditorialReport.length, EditorialReport[0]);
+//   });
+// let matchCount = 0;
+// fs.createReadStream("Output.csv")
+//   .pipe(csv())
+//   .on("data", (data) => Output.push(data))
+//   .on("end", () => {
+//     console.log("Output", Output.length);
+//     for (let i = 0; i < Output.length; i++) {
+//       let matchFound = false;
+//       for (let j = 0; j < EditorialReport.length; j++) {
+//         if (Output[i]["Page"] === EditorialReport[j]["Herb Co Page Url"]) {
+//           let obj = { ...Output[i] };
+//           for (let key in EditorialReport[j]) {
+//             if (key !== "Herb Co Page Url") {
+//               obj[key] = EditorialReport[j][key];
+//             }
+//           }
+//           matchedData.push(obj);
+//           matchFound = true;
+//           matchCount++;
+//           break;
+//         }
+//       }
+//       if (!matchFound) {
+//         matchedData.push(Output[i]);
+//       }
+//     }
+//     console.log("Matched Data", matchedData[0], matchedData.length);
+//     console.log("Match Count", matchCount);
+//   });
 
 function convertToCSV(arr) {
   const array = [Object.keys(arr[0])].concat(arr);
