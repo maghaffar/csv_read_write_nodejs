@@ -7,58 +7,42 @@ const EditorialReport = [];
 const Output = [];
 const noindex_links = [];
 let matchedData = [];
-const array = [
-  "/guides/holiday-guide/",
-  "url2",
-  "url3"
-];
-const link = `/guides/holiday-guide`;
 
-array.map((val)=>{
-  if(val === `${link}/`){
-    console.log("OK");
-  }
-  else{
-    console.log("Not Ok")
-  }
-})
-const writeStream = fs.createWriteStream("array.js"); 
-// array.map((val)=> console.log(val));
-// fs.createReadStream("noindex_links.csv")
-//   .pipe(csv())
-//   .on("data", (data) => Output.push(data))
-//   .on("end", () => {
-//     Output.map((e) => {
-//       noindex_links.push(e.Page.slice(15));
-//     });
+// const writeStream = fs.createWriteStream("removeUrls.js");
 
-//     noindex_links.forEach((url)=>{
-//       console.log("Running...")
-//       if(url == "/learn/sativa"){
-//         console.log(url);
-//         return;
-//       }
-//     })
-    // Writing Array to a file
+fs.createReadStream("remove.csv")
+  .pipe(csv())
+  .on("data", (data) => Output.push(data))
+  .on("end", () => {
+    console.log(Output.length);
+    Output.map((e) => {
+      noindex_links.push(e.Address.slice(15));
+    });
 
-  //   noindex_links.forEach((value) => {
-  //     const link = JSON.stringify(value);
-  //     writeStream.write(`${link},\n`);
-  //   });
+    // noindex_links.forEach((url) => {
+    //   console.log(url);
+    // });
+    // console.log(noindex_links.length);
+    // //Writing Array to a file
+    // console.log("=====>>>>>>Length", noindex_links.length);
+    // noindex_links.forEach((value) => {
+    //   const link = JSON.stringify(value);
+    //   writeStream.write(`${link},\n`);
+    // });
 
-  //   // the finish event is emitted when all data has been flushed from the stream
-  //   writeStream.on("finish", () => {
-  //     console.log(`wrote all the array data to file...`);
-  //   });
+    // // the finish event is emitted when all data has been flushed from the stream
+    // writeStream.on("finish", () => {
+    //   console.log(`wrote all the array data to file...`);
+    // });
 
-  //   // handle the errors on the write process
-  //   writeStream.on("error", (err) => {
-  //     console.error(`There is an error writing the file`);
-  //   });
+    // // handle the errors on the write process
+    // writeStream.on("error", (err) => {
+    //   console.error(`There is an error writing the file`);
+    // });
 
-  //   // close the stream
-  //   writeStream.end();
-  // });
+    // // close the stream
+    // writeStream.end();
+  });
 
 // fs.createReadStream("data-export.csv")
 //   .pipe(csv())
@@ -67,29 +51,29 @@ const writeStream = fs.createWriteStream("array.js");
 //     console.log("Data Export", DataExport.length);
 //   });
 
-const CompareFunction = () => {
-  for (let i = 0; i < PageRemovalMap.length; i++) {
-    let matchFound = false;
-    for (let j = 0; j < DataExport.length; j++) {
-      let link = PageRemovalMap[i]["Page"].slice(15);
-      if (link === DataExport[j]["Page path and screen class"]) {
-        let obj = { ...PageRemovalMap[i] };
-        for (let key in DataExport[j]) {
-          if (key !== "Page path and screen class") {
-            obj[key] = DataExport[j][key];
-          }
-        }
-        matchedData.push(obj);
-        matchFound = true;
-        break;
-      }
-    }
-    if (!matchFound) {
-      matchedData.push(PageRemovalMap[i]);
-    }
-  }
-  console.log("Matched Data", matchedData[0], matchedData.length);
-};
+// const CompareFunction = () => {
+//   for (let i = 0; i < PageRemovalMap.length; i++) {
+//     let matchFound = false;
+//     for (let j = 0; j < DataExport.length; j++) {
+//       let link = PageRemovalMap[i]["Page"].slice(15);
+//       if (link === DataExport[j]["Page path and screen class"]) {
+//         let obj = { ...PageRemovalMap[i] };
+//         for (let key in DataExport[j]) {
+//           if (key !== "Page path and screen class") {
+//             obj[key] = DataExport[j][key];
+//           }
+//         }
+//         matchedData.push(obj);
+//         matchFound = true;
+//         break;
+//       }
+//     }
+//     if (!matchFound) {
+//       matchedData.push(PageRemovalMap[i]);
+//     }
+//   }
+//   console.log("Matched Data", matchedData[0], matchedData.length);
+// };
 
 // fs.createReadStream("EditorialReport.csv")
 //   .pipe(csv())
